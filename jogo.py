@@ -200,9 +200,13 @@ def main():
             window.blit(bomba.spritebomba, (bomba.posicao.x, bomba.posicao.y + camerafora))
 
         window.blit(pygame.transform.rotate(jogador.flipatual, clamp(jogador.velocidade.y, -10, 5)*rotacao), (jogador.posicao.x, jogador.posicao.y + camerafora))
-        pygame.draw.rect(window, (62, 125, 82), (20, 440, 100*(vida/100), 25))
+        pygame.draw.rect(window, (62, 125, 82), (20, 440, 200*(vida/100), 25))
 
-
+    
+        vida -= 0.3*deltat
+        if vida <= 0 and not morto:
+            morto = True
+            
         if morto:
             window.blit(retrybutton, (4, 4))
             morreu = fonte_pequena.render('Recomeçar', True, (0, 0, 0))
@@ -229,9 +233,6 @@ def main():
         jogador.posicao.y += jogador.velocidade.y*deltat
         jogador.velocidade.y = clamp(jogador.velocidade.y + jogador.aceleracao*deltat, -100000000, 50)
 
-        vida -= 0.3*deltat
-        if vida <= 0 and not morto:
-            morto = True
         
         for dinheiro in dinheiros:
             if camerafora + dinheiro.posicao.y + 60 > window.get_height():
