@@ -50,7 +50,7 @@ class Botao:
     
     spritebotao = pygame.image.load('assets/img/button.png')
 
-class Coin(pygame.sprite.Sprite):
+class Moeda(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.images = []
@@ -64,16 +64,16 @@ class Coin(pygame.sprite.Sprite):
         self.counter = 0
 
     def update(self):
-        coin_spped = 2
+        moeda_spped = 2
 
         self.counter += 1
 
-        if self.counter >= coin_spped:
+        if self.counter >= moeda_spped:
             self.counter = 0
             self.index += 1
             self.image = self.images[self.index] 
         
-        if self.index >= len(self.images) and self.counter >= coin_spped:
+        if self.index >= len(self.images) and self.counter >= moeda_spped:
             self.kill() 
 
     
