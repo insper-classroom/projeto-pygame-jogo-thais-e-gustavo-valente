@@ -9,7 +9,7 @@ class Jogador:
     aceleracao = 0.25
     velocidade = pygame.Vector2()
     velocidade.xy = 4.3, 0
-    viradodireita = pygame.image.load('player.png')
+    viradodireita = pygame.image.load('assets/img/player.png')
     viradodireita = pygame.transform.scale(viradodireita, (100, 100))
     viradoesquerda = pygame.transform.flip(viradodireita, True, False)
     flipatual = viradoesquerda
@@ -20,7 +20,7 @@ class Dinheiro(pygame.sprite.Sprite):
         super().__init__()
         self.posicao = pygame.Vector2()
         self.posicao.xy
-        self.spritedinheiro = pygame.image.load('money.png')
+        self.spritedinheiro = pygame.image.load('assets/img/money.png')
         self.spritedinheiro = pygame.transform.scale(self.spritedinheiro, (50, 80))
 
 class Bomba(pygame.sprite.Sprite):
@@ -28,14 +28,14 @@ class Bomba(pygame.sprite.Sprite):
         super().__init__()
         self.posicao = pygame.Vector2()
         self.posicao.xy
-        self.spritebomba = pygame.image.load('bomba.png')
+        self.spritebomba = pygame.image.load('assets/img/bomba.png')
         self.spritebomba = pygame.transform.scale(self.spritebomba, (50, 80))
 
 class Fundo:
     def __init__(self):
-        self.spritefundo = pygame.image.load('bandeirafundo.png')
+        self.spritefundo = pygame.image.load('assets/img/bandeirafundo.png')
         self.posicao = 0
-        self.cornormal = pygame.image.load('bandeirafundo.png')
+        self.cornormal = pygame.image.load('assets/img/bandeirafundo.png')
 
     def defineSprite(self, corf):
         copia = self.cornormal.copy()
@@ -48,7 +48,7 @@ class Botao:
         self.preco = 3
         self.nivel = 1
     
-    spritebotao = pygame.image.load('button.png')
+    spritebotao = pygame.image.load('assets/img/button.png')
 
 
     
@@ -75,10 +75,10 @@ def main():
     fonte_menor = pygame.font.Font(pygame.font.get_default_font(), 20)
 
     #carrega as imagens
-    sompulo = pygame.mixer.Sound('tiro.mp3')
-    somdinheiro = pygame.mixer.Sound('moneysound.mp3')
-    explodindo = pygame.mixer.Sound('explosao.mp3')
-    musica = pygame.mixer.music.load('musicaestadoislamico.mp3')
+    sompulo = pygame.mixer.Sound('assets/snd/tiro.mp3')
+    somdinheiro = pygame.mixer.Sound('assets/snd/moneysound.mp3')
+    explodindo = pygame.mixer.Sound('assets/snd/explosao.mp3')
+    musica = pygame.mixer.music.load('assets/snd/musicaestadoislamico.mp3')
     BRANCO = (255, 255, 255)
 
     rotacao = -3.5
@@ -113,9 +113,9 @@ def main():
 
     fps = 60
     last_updated = time.time()
-    planodefundostart = pygame.image.load('planodefundostart.png')
-    retrybutton = pygame.image.load('retry_button.png')
-    botaotentenovamente = fonte_pequena.render('Recomeçar', True, (0, 0, 0))
+    planodefundostart = pygame.image.load('assets/img/planodefundostart.png')
+    retrybutton = pygame.image.load('assets/img/retry_button.png')
+    botaotentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
 
     #loop da tela de titulo
     while True:
@@ -208,7 +208,7 @@ def main():
         pygame.draw.rect(window, (62, 125, 82), (20, 440, 200*(vida/100), 25))
 
     
-        vida -= 0.3*deltat
+        vida -= 0.25*deltat
         if vida <= 0 and not morto:
             morto = True
             
