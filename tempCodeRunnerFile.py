@@ -1,1 +1,1 @@
-dinheirogroup
+window.fill(BRANCO)

@@ -75,11 +75,13 @@ def main():
     fonte_menor = pygame.font.Font(pygame.font.get_default_font(), 20)
 
     #carrega as imagens
-    sompulo = pygame.mixer.Sound('assets/snd/tiro.mp3')
-    somdinheiro = pygame.mixer.Sound('assets/snd/moneysound.mp3')
-    explodindo = pygame.mixer.Sound('assets/snd/explosao.mp3')
-    musica = pygame.mixer.music.load('assets/snd/musicaestadoislamico.mp3')
-    BRANCO = (255, 255, 255)
+    assets = {
+        'sompulo': pygame.mixer.Sound('assets/snd/tiro.mp3'),
+        'somdinheiro': pygame.mixer.Sound('assets/snd/moneysound.mp3'),
+        'explodindo': pygame.mixer.Sound('assets/snd/explosao.mp3'),
+        'musica': pygame.mixer.music.load('assets/snd/musicaestadoislamico.mp3')
+    }
+    
 
     rotacao = -3.5
 
@@ -140,8 +142,7 @@ def main():
         if (clicou and checkcolisoes(mx, my, 2, 2, window.get_width() / 2 - botaotentenovamente.get_width() / 2, 280, botaotentenovamente.get_width(), botaotentenovamente.get_height())):
             clicou = False
             break
-
-        window.fill(BRANCO)
+        
         window.blit(planodefundostart, (0, 0))
         comecar = fonte_pequena.render('Clique aqui para começar', True, (0, 0, 0))
         window.blit(comecar, (window.get_width() / 2 - comecar.get_height() / 2, 290))
@@ -186,7 +187,7 @@ def main():
         
         camerafora = -jogador.posicao.y + window.get_height()/2 - jogador.flipatual.get_size()[1]/2
 
-        window.fill(BRANCO)
+        window.fill((255, 255, 255))
         for x in pf:
             x.defineSprite(((jogador.posicao.y/50) % 100) / 100)
             window.blit(x.spritefundo, (0, x.posicao))
@@ -233,7 +234,7 @@ def main():
         
         if pulando and not morto:
             jogador.velocidade.y = -forcapulo
-            pygame.mixer.Sound(sompulo)
+            pygame.mixer.Sound(assets['sompulo'])
 
         jogador.posicao.y += jogador.velocidade.y*deltat
         jogador.velocidade.y = clamp(jogador.velocidade.y + jogador.aceleracao*deltat, -100000000, 50)
@@ -249,7 +250,7 @@ def main():
                 vida = 100
                 dinheiro.posicao.y -= window.get_height() - random.randrange(0, 200)
                 dinheiro.posicao.x = random.randrange(0, window.get_width() - dinheiro.spritedinheiro.get_width())
-                pygame.mixer.Sound.play(somdinheiro)
+                pygame.mixer.Sound.play(assets['somdinheiro'])
 
         for bomba in bombas:
             if camerafora + bomba.posicao.y + 60 > window.get_height():
@@ -259,7 +260,7 @@ def main():
                 vida -= 20
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - bomba.spritebomba.get_width())
-                pygame.mixer.Sound.play(explodindo)
+                pygame.mixer.Sound.play(assets['explodindo'])
 
 
         if morto and clicou and checkcolisoes(mx, my, 3, 3, 4, 4, botaotentenovamente.get_width(), botaotentenovamente.get_height()):
