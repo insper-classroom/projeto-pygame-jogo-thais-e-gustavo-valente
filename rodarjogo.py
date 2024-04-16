@@ -73,7 +73,6 @@ def main():
                 pygame.quit() 
 
 
-
         if (clicou and checkcolisoes(mx, my, 2, 2, window.get_width() / 2 - botaotentenovamente.get_width() / 2, 280, botaotentenovamente.get_width(), botaotentenovamente.get_height())):
             clicou = False
             break
