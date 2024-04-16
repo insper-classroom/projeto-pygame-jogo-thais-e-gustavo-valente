@@ -31,6 +31,33 @@ class Bomba(pygame.sprite.Sprite):
         self.spritebomba = pygame.image.load('assets/img/bomba.png')
         self.spritebomba = pygame.transform.scale(self.spritebomba, (50, 80))
 
+class Explosao(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.imagens = []
+        for n in range(9):
+            img = pygame.image.load(f'assets/img/regularExplosion0{str(n)}.png')
+            self.imagens.append(img)
+
+        self.indice = 0
+        self.image = self.imagens[self.indice]
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.contador = 0
+
+    def update(self):
+        velocidade_explosao = 2
+
+        self.contador += 1
+
+        if self.contador >= velocidade_explosao:
+            self.contador = 0
+            self.indice = 1
+            self.image = self.imagens[self.indice]
+
+        if self.indice >= len(self.imagens) and self.contador >= velocidade_explosao:
+            self.kill()
+
 class Fundo:
     def __init__(self):
         self.spritefundo = pygame.image.load('assets/img/bandeirafundo.png')
@@ -52,7 +79,7 @@ class Botao:
 
 
     
-def clamp(valor, min, max):
+def clip(valor, min, max):
     if valor < min:
         return min 
     
@@ -73,6 +100,8 @@ def main():
     font = pygame.font.Font(pygame.font.get_default_font(), 100)
     fonte_pequena = pygame.font.Font(pygame.font.get_default_font(), 32)
     fonte_menor = pygame.font.Font(pygame.font.get_default_font(), 20)
+    dinheirogroup = pygame.sprite.Group()
+    bombasgroup = pygame.sprite.Group 
 
     #carrega as imagens
     assets = {
@@ -94,7 +123,7 @@ def main():
     for i in range(5):
         dinheiros.append(Dinheiro())
 
-    for i in range(7):
+    for i in range(4):
         bombas.append(Bomba())
 
     for dinheiro in dinheiros:
@@ -205,7 +234,8 @@ def main():
         for bomba in bombas:
             window.blit(bomba.spritebomba, (bomba.posicao.x, bomba.posicao.y + camerafora))
 
-        window.blit(pygame.transform.rotate(jogador.flipatual, clamp(jogador.velocidade.y, -10, 5)*rotacao), (jogador.posicao.x, jogador.posicao.y + camerafora))
+
+        window.blit(pygame.transform.rotate(jogador.flipatual, clip(jogador.velocidade.y, -10, 5)*rotacao), (jogador.posicao.x, jogador.posicao.y + camerafora))
         pygame.draw.rect(window, (62, 125, 82), (20, 440, 200*(vida/100), 25))
 
     
@@ -227,6 +257,11 @@ def main():
             jogador.flipatual = jogador.viradodireita
             rotacao = 3.5
 
+        # tecla = pygame.key.get_pressed()
+        # for event in pygame.event.get():
+        #     if event.type == pygame.KEYDOWN and event.key == 2:
+        #         jogador.velocidade.x = -abs(jogador.velocidade.x)
+
         if jogador.posicao.x < 0:
             jogador.velocidade.x = abs(jogador.velocidade.x)
             jogador.flipatual = jogador.viradoesquerda
@@ -237,7 +272,7 @@ def main():
             pygame.mixer.Sound(assets['sompulo'])
 
         jogador.posicao.y += jogador.velocidade.y*deltat
-        jogador.velocidade.y = clamp(jogador.velocidade.y + jogador.aceleracao*deltat, -100000000, 50)
+        jogador.velocidade.y = clip(jogador.velocidade.y + jogador.aceleracao*deltat, -100000000, 50)
 
         
         for dinheiro in dinheiros:
@@ -252,15 +287,21 @@ def main():
                 dinheiro.posicao.x = random.randrange(0, window.get_width() - dinheiro.spritedinheiro.get_width())
                 pygame.mixer.Sound.play(assets['somdinheiro'])
 
+        explosoes = pygame.sprite.Group()
         for bomba in bombas:
             if camerafora + bomba.posicao.y + 60 > window.get_height():
                 bomba.posicao.y =- window.get_height()*2
                 bomba.posicao.x = random.randrange(0, window.get_width() - bomba.spritebomba.get_width())
             if (checkcolisoes(jogador.posicao.x, jogador.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height(), bomba.posicao.x, bomba.posicao.y, bomba.spritebomba.get_width(), bomba.spritebomba.get_height())):
                 vida -= 20
+                exp = Explosao(bomba.posicao.x, bomba.posicao.y)
+                window.blit(exp.image, (bomba.posicao.x, bomba.posicao.y))
+                pygame.mixer.Sound.play(assets['explodindo'])
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - bomba.spritebomba.get_width())
-                pygame.mixer.Sound.play(assets['explodindo'])
+        
+        
+        explosoes.update()
 
 
         if morto and clicou and checkcolisoes(mx, my, 3, 3, 4, 4, botaotentenovamente.get_width(), botaotentenovamente.get_height()):
