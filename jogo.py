@@ -168,7 +168,6 @@ def main():
         pygame.display.update()
          
         pygame.display.update()
-        pygame.time.delay(10)
 
 
     while True:
