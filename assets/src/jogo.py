@@ -1,91 +1,15 @@
 import pygame
 import time, random, colorsys, math
 from pygame.math import Vector2
+from bomba import Bomba
+from dinheiro import Dinheiro
+from explosao import Explosao
+from fundo import Fundo
+from jogador import Jogador
+from funcoes import clip, checacolisoes
 
 
-class Jogador(pygame.sprite.Sprite):
-        posicao = pygame.Vector2()
-        posicao.xy = 295, 100
-        velocidade = pygame.Vector2()
-        velocidade.xy = 3, 0
-        acceleration = 0.1
-        flipdireita = pygame.image.load('assets/img/player.png')
-        flipdireita = pygame.transform.scale(flipdireita, (70, 70))
-        flipdireita = pygame.transform.flip(flipdireita, True, False)
-        flipesquerda = pygame.transform.flip(flipdireita, True, False)
-        flipatual = flipdireita
-
-
-class Dinheiro(pygame.sprite.Sprite): 
-    def __init__(self):
-        super().__init__()
-        self.spritedinheiro = pygame.image.load('assets/img/money.png')
-        self.spritedinheiro = pygame.transform.scale(self.spritedinheiro, (50, 80))
-        self.posicao = pygame.Vector2()
-        self.posicao.xy
-
-class Explosao(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.imagens = []
-        for n in range(9):
-            img = pygame.image.load(f'assets/img/regularExplosion0{str (n)}.png')
-            self.imagens.append(img)
-
-        self.indice = 0
-        self.image = self.imagens[self.indice]
-        self.rect = self.image.get_rect()
-        self.rect.center = [x, y]
-        self.contador = 0
-    
-    def update(self):
-        velocidade_explosao = 1
-
-        self.contador += 1
-
-        if self.contador >= velocidade_explosao:
-            self.contador = 0
-            self.indice = 1
-            self.image = self.imagens[self.indice]
-
-        if self.indice >= len(self.imagens) and self.contador >= velocidade_explosao:
-            self.kill()
-
-class Fundo:
-    def __init__(self):
-        self.sprite = pygame.image.load('assets/img/fundo.png')
-        self.sprite = pygame.transform.scale(self.sprite, (640, 480))
-        self.posicao = 0
-        self.cornormal = pygame.image.load('assets/img/fundo.png') 
-        self.cornormal = pygame.transform.scale(self.cornormal, (640, 480))
-    def definefundo(self, tint):  
-        copia = self.cornormal.copy()
-        cor = colorsys.hsv_to_rgb(tint,1,1)
-        copia.fill((cor[0]*40, cor[1]*90, cor[2]*200), special_flags=pygame.BLEND_ADD)
-        self.sprite = copia
-
-class Bomba(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.posicao = pygame.Vector2()
-        self.posicao.xy
-        self.spritebomba = pygame.image.load('assets/img/bomba.png')
-        self.spritebomba = pygame.transform.scale(self.spritebomba, (50, 80))
-
-
-def clip(valor, min, max): #serve p limitar a velocidade do boneco pq se ficar apertando espaco
-                            #a velocidade iria acumulando ai uma hr ia ficar escroto de rapido
-    if valor < min:
-        return min
-    if valor > max:
-        return max
-    return valor
-
-def checacolisoes(a_x, a_y, a_width, a_height, b_x, b_y, b_width, b_height):
-    return (a_x + a_width > b_x) and (a_x < b_x + b_width) and (a_y + a_height > b_y) and (a_y < b_y + b_height)
-
-
-def main():
+def run():
     pygame.init()
     window=pygame.display.set_mode((640,480))
     font = pygame.font.Font(pygame.font.get_default_font(), 100)
@@ -222,7 +146,7 @@ def main():
         pygame.draw.rect(window,(62, 125, 82),(21,437,150*(vida/100),25))
             
 
-        vida -= 0.25*deltat
+        vida -= 0.20*deltat
         if vida <= 0 and not morto:
             morto = True
 
@@ -273,7 +197,9 @@ def main():
                     morto = False
                     pygame.mixer.Sound.play(assets['dinheirosom'])
                     contadordinheiro += 1
-                    vida = 100
+                    vida +=20
+                    if vida > 100:
+                        vida = 100
                     dinheiro.posicao.y -= window.get_height() - random.randrange(0, 200)
                     dinheiro.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
 
@@ -285,10 +211,11 @@ def main():
             if (checacolisoes(jogador.posicao.x, jogador.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height(), bomba.posicao.x, bomba.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height())):
                 vida -= 20
                 pygame.mixer.Sound.play(assets['explosaosom'])
+                exp = Explosao(bomba.posicao.x, bomba.posicao.y)
+                window.blit(exp.image, (0, 0)) 
+
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
-                exp = Explosao(bomba.posicao.x, bomba.posicao.y)
-                window.blit(exp.image, (clip(bomba.posicao.x, 0, 620), clip(bomba.posicao.y, 0, 460)))
             if bomba.posicao.y > window.get_height() or bomba.posicao.x > window.get_width():
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
@@ -340,4 +267,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run()
