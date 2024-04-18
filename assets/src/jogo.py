@@ -88,8 +88,6 @@ def run():
         window.blit(planodefundotit, (0, 0))
         comece = fonte_pequena.render('CLIQUE AQUI PARA COMEÇAR', True, (0, 0, 0))
         window.blit(comece, (window.get_width()/2 - comece.get_width()/2, 290))
-
-        pygame.display.update()
          
         pygame.display.update()
 
@@ -146,15 +144,39 @@ def run():
         pygame.draw.rect(window,(62, 125, 82),(21,437,150*(vida/100),25))
             
 
-        vida -= 0.20*deltat
+        vida -= 0.25*deltat
         if vida <= 0 and not morto:
             morto = True
 
         if morto:
-            textotentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
-            window.blit(textotentenovamente, (20, 12))
+            deltat = time.time() - last_updated
+            deltat *= 60
+            last_updated = time.time()
 
+            mx, my = pygame.mouse.get_pos()
+            clicou = False
+            teclas = pygame.key.get_pressed()
+
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    clicou = True
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
         
+            if teclas[pygame.K_RETURN]:
+                clicou = False
+                morto = False
+        
+            
+
+            window.fill((0,0,0))
+            textotentenovamente = fonte_menor.render('Recomeçar', True, (255, 255, 255))
+            window.blit(textotentenovamente, (270, 240))
+
+            pygame.display.update()
+
+
         altura = round(-(jogador.posicao.y - alturainicial)/window.get_height())
  
         jogador.posicao.x += jogador.velocidade.x*deltat
@@ -212,7 +234,7 @@ def run():
                 vida -= 20
                 pygame.mixer.Sound.play(assets['explosaosom'])
                 exp = Explosao(bomba.posicao.x, bomba.posicao.y)
-                window.blit(exp.image, (0, 0)) 
+                window.blit(exp.image, (190, 0)) 
 
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
@@ -220,7 +242,12 @@ def run():
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
         
-        if morto and clicou and checacolisoes(mx, my, 3, 3, 4, 4, formatentenovamente.get_width(), formatentenovamente.get_height()):
+        tecla = pygame.key.get_pressed()
+        if morto and tecla[pygame.K_RETURN]:
+            deltat = time.time() - last_updated
+            deltat *= 60
+            last_updated = time.time()
+
             vida = 100
             contadordinheiro = 0
             altura = 0
