@@ -144,7 +144,7 @@ def run():
         pygame.draw.rect(window,(62, 125, 82),(21,437,150*(vida/100),25))
             
 
-        vida -= 0.5*deltat
+        vida -= 0.25*deltat
         if vida <= 0 and not morto:
             morto = True
 
