@@ -7,7 +7,7 @@ def main():
     window = pygame.display.set_mode((640, 480))
     font = pygame.font.Font(pygame.font.get_default_font(), 100)
     fonte_pequena = pygame.font.Font(pygame.font.get_default_font(), 32)
-    fonte_menor = pygame.font.Font(pygame.font.get_default_font(), 20)
+    fonte_menor = pygame.font.Font(pygame.font.get_default_font(), 20) 
 
     #carrega as imagens
     sompulo = pygame.mixer.Sound('tiro.mp3')
@@ -71,7 +71,6 @@ def main():
 
             if event.type == pygame.QUIT:
                 pygame.quit() 
-
 
 
         if (clicou and checkcolisoes(mx, my, 2, 2, window.get_width() / 2 - botaotentenovamente.get_width() / 2, 280, botaotentenovamente.get_width(), botaotentenovamente.get_height())):
