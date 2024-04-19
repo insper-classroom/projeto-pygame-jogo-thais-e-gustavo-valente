@@ -255,7 +255,7 @@ def run():
             multiplicadordinheiro = 3
             jogador.velocidade.xy = 2.5, 0
             jogador.posicao.xy = 300, 100
-            jogador.flipatual = jogador.flipesquerda
+            jogador.flipatual = jogador.flipdireita
             bombas = []
             dinheiros = []
 
