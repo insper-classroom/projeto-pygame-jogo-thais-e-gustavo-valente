@@ -20,9 +20,9 @@ def run():
 
     tempo = pygame.time.Clock()
     user_text = ''
-    input_rect2 = pygame.Rect(200, 200, 140, 32)
-    color_active = (0,0,0)
-    color_passive = (255,0,0)
+    input_rect2 = pygame.Rect(window.get_width()/2 - 50, window.get_height()/2, 500, 40)
+    color_active = (128,128,128)
+    color_passive = (79,79,79)
 
     assets = {
        'dinheirosom': pygame.mixer.Sound('assets/snd/moneysound.mp3'),
@@ -93,7 +93,6 @@ def run():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     user_text = user_text[:-1]
-                
                 else:
                     user_text += event.unicode
 
@@ -110,8 +109,8 @@ def run():
             color = color_passive
         
         pygame.draw.rect(window, color, input_rect2)
-        texto = fonte_pequena.render(user_text, True, (255,255,255))
-        window.blit(texto, (200 + 5, 200 + 5))
+        texto = fonte_pequena.render(user_text, True, (0,0,0))
+        window.blit(texto, (window.get_width()/2 - 40, window.get_height()/2 + 5))
         input_rect2.w = max(100, texto.get_width() + 10)
 
         pygame.display.flip()
