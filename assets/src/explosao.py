@@ -16,7 +16,7 @@ class Explosao(pygame.sprite.Sprite):
         self.contador = 0
     
     def update(self):
-        velocidade_explosao = 4
+        velocidade_explosao = 5
 
         self.contador += 1
 
