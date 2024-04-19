@@ -6,7 +6,7 @@ from dinheiro import Dinheiro
 from explosao import Explosao
 from fundo import Fundo
 from jogador import Jogador
-from funcoes import clip, checacolisoes
+from funcoes import clip, checacolisoes, pegamaiorelemento, adicionanoarquivo
 
 
 def run():
@@ -62,6 +62,9 @@ def run():
     moneysound = pygame.mixer.Sound('assets/snd/moneysound.mp3')
     planodefundotit = pygame.image.load('assets/img/planodefundostart.png')
     botaotentenovamente = pygame.image.load('assets/img/botaoforma.png')
+
+    recordearq = "records.txt"
+    
     tentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
     
     while True:
@@ -139,12 +142,19 @@ def run():
         cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)
         marcadoraltura = font.render(str(altura), True, (168, 168, 168))
         window.blit(marcadoraltura, (window.get_width()/2 - marcadoraltura.get_width()/2, camerafora + round((jogador.posicao.y - alturainicial)/window.get_height())*window.get_height() + jogador.flipatual.get_height() - 40))
-        
+        novorecord = altura
+        appendscore = adicionanoarquivo(recordearq, novorecord)
+
+        maior = pegamaiorelemento(recordearq)
+
+        maiorrecorde = fonte_pequena.render('Maior Recorde: ' + str(maior), True, (168, 168, 168))
+        window.blit(maiorrecorde, (window.get_width() / 2 - maiorrecorde.get_width() / 2 , 5))
+
         window.blit(pygame.transform.rotate (jogador.flipatual, clip(jogador.velocidade.y, -10, 5)*rotacao), (jogador.posicao.x,jogador.posicao.y + camerafora))
         pygame.draw.rect(window,(62, 125, 82),(21,437,150*(vida/100),25))
             
 
-        vida -= 0.5*deltat
+        vida -= 0.25*deltat
         if vida <= 0 and not morto:
             morto = True
 
@@ -234,7 +244,7 @@ def run():
                 vida -= 20
                 pygame.mixer.Sound.play(assets['explosaosom'])
                 exp = Explosao(bomba.posicao.x, bomba.posicao.y)
-                window.blit(exp.image, (0, 0)) 
+                window.blit(exp.image, (100, 0)) 
 
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
@@ -255,7 +265,7 @@ def run():
             multiplicadordinheiro = 3
             jogador.velocidade.xy = 2.5, 0
             jogador.posicao.xy = 300, 100
-            jogador.flipatual = jogador.flipesquerda
+            jogador.flipatual = jogador.flipdireita
             bombas = []
             dinheiros = []
 
