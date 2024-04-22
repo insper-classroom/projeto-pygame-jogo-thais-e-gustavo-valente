@@ -17,6 +17,7 @@ def run():
     fontepequena = pygame.font.Font(pygame.font.get_default_font(), 20)
     formatentenovamente = pygame.image.load('assets/img/botaoforma.png')
     musicaestadoislamico = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
+    pygame.mixer.music.play()
 
     assets = {
        'dinheirosom': pygame.mixer.Sound('assets/snd/moneysound.mp3'),
@@ -29,11 +30,11 @@ def run():
     dinheiros = []
     bombas = []
     
-    for i in range(15): 
+    for i in range(12): 
         dinheiros.append(Dinheiro())
 
     
-    for i in range(6):
+    for i in range(9):
         bombas.append(Bomba())
 
     for dinheiro in dinheiros:
@@ -61,16 +62,14 @@ def run():
 
     moneysound = pygame.mixer.Sound('assets/snd/moneysound.mp3')
     planodefundotit = pygame.image.load('assets/img/planodefundostart.png')
+    planodefundotit = pygame.transform.scale(planodefundotit, (window.get_width() - 40, window.get_height() - 30))
     botaotentenovamente = pygame.image.load('assets/img/botaoforma.png')
 
     recordearq = "records.txt"
     
-    tentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
+    tentenovamente = fonte_menor.render('Pressione ENTER para recomeçar', True, (0, 0, 0))
     
     while True:
-        pygame.mixer.music.play()
-        deltat = time.time() - last_updated
-        deltat *= 60
         last_updated = time.time()
 
         mx, my = pygame.mouse.get_pos()
@@ -94,9 +93,9 @@ def run():
          
         pygame.display.update()
 
-
+    musicaestadoislamico = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
+    pygame.mixer.music.play()
     while True:
-        
         deltat = time.time() - last_updated
         deltat *= 60
         last_updated = time.time()
@@ -116,20 +115,21 @@ def run():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
                 inverte = True
   
-            if clicou and my < window.get_height() - 90:
-                pulando = True
+            if clicou and my < window.get_height() - 90: 
+                pulando = True 
             
 
             if event.type == pygame.QUIT:
                 pygame.quit()
         
-        window.fill((255, 255, 255))
+        cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)        
+        window.fill((0, 0, 0))
         
         for x in pf:
             x.definefundo(((jogador.posicao.y/50) % 100) / 100)
             window.blit(x.sprite, (0, x.posicao))
         
-        mostracontador = fonteprincipal.render('$' + str(contadordinheiro).zfill(5), True, (0, 0, 0))
+        mostracontador = fonteprincipal.render('$' + str(contadordinheiro).zfill(5), True, (168, 168, 168))
         window.blit(mostracontador, (30, 400))
 
         for dinheiro in dinheiros:
@@ -138,16 +138,30 @@ def run():
         for bomba in bombas:
             window.blit(bomba.spritebomba, (bomba.posicao.x, bomba.posicao.y + camerafora))
 
-
         cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)
-        marcadoraltura = font.render(str(altura), True, (168, 168, 168))
+        objetos_astronomicos = {
+            (0, 10): 'Terra',
+            (10, 15): 'Marte',
+            (15, 25): 'Júpiter',
+            (25, 40): 'Saturno',
+            (40, 55): 'Urano',
+            (55, 70): 'Netuno',
+            (70, 100): 'Galáxia de Andrômeda',
+            (100, float('inf')): 'Messier 31'  
+        }
+
+        for intervalo, objeto in objetos_astronomicos.items():
+            if intervalo[0] <= altura < intervalo[1]:
+                marcadoraltura = fonte_pequena.render(f'Distância: {altura} em:{objeto}', True, (168, 168, 168))
+                break  
+
         window.blit(marcadoraltura, (window.get_width()/2 - marcadoraltura.get_width()/2, camerafora + round((jogador.posicao.y - alturainicial)/window.get_height())*window.get_height() + jogador.flipatual.get_height() - 40))
         novorecord = altura
         appendscore = adicionanoarquivo(recordearq, novorecord)
 
         maior = pegamaiorelemento(recordearq)
 
-        maiorrecorde = fonte_pequena.render('Maior Recorde: ' + str(maior), True, (168, 168, 168))
+        maiorrecorde = fonte_pequena.render('Maior Distância: ' + str(maior), True, (168, 168, 168))
         window.blit(maiorrecorde, (window.get_width() / 2 - maiorrecorde.get_width() / 2 , 5))
 
         window.blit(pygame.transform.rotate (jogador.flipatual, clip(jogador.velocidade.y, -10, 5)*rotacao), (jogador.posicao.x,jogador.posicao.y + camerafora))
@@ -181,8 +195,8 @@ def run():
             
 
             window.fill((0,0,0))
-            textotentenovamente = fonte_menor.render('Recomeçar', True, (255, 255, 255))
-            window.blit(textotentenovamente, (270, 240))
+            textotentenovamente = fonte_menor.render('Aperte ENTER para recomeçar', True, (255, 255, 255))
+            window.blit(textotentenovamente, (window.get_width()/2 - 150, window.get_height()/2))
 
             pygame.display.update()
 
