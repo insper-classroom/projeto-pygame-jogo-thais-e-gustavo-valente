@@ -16,7 +16,7 @@ def run():
     fonteprincipal = pygame.font.Font(pygame.font.get_default_font(), 30)
     fontepequena = pygame.font.Font(pygame.font.get_default_font(), 20)
     formatentenovamente = pygame.image.load('assets/img/botaoforma.png')
-    musicaestadoislamico = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
+    trilhasonora = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
     pygame.mixer.music.play()
 
     assets = {
@@ -77,6 +77,9 @@ def run():
         teclas = pygame.key.get_pressed()
 
         for event in pygame.event.get():
+            # if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            #     clicou = True
+
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 clicou = True
 
@@ -88,12 +91,12 @@ def run():
             break
         window.fill((255, 255, 255))
         window.blit(planodefundotit, (0, 0))
-        comece = fonte_pequena.render('CLIQUE AQUI PARA COMEÇAR', True, (0, 0, 0))
-        window.blit(comece, (window.get_width()/2 - comece.get_width()/2, 290))
+        comece = fonte_pequena.render('APERTE "ENTER" PARA COMEÇAR', True, (0, 0, 0))
+        window.blit(comece, (window.get_width()/2 - comece.get_width()/2, window.get_height() - comece.get_height()))
          
         pygame.display.update()
 
-    musicaestadoislamico = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
+    trilhasonora = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
     pygame.mixer.music.play()
     while True:
         deltat = time.time() - last_updated
@@ -109,6 +112,7 @@ def run():
         for event in pygame.event.get():
             if event.type==pygame.KEYDOWN and event.key==pygame.K_SPACE:
                 pulando = True
+
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 clicou = True
 
@@ -118,9 +122,8 @@ def run():
             if clicou and my < window.get_height() - 90: 
                 pulando = True 
             
-
             if event.type == pygame.QUIT:
-                pygame.quit()
+                pygame.quit() 
         
         cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)        
         window.fill((0, 0, 0))
@@ -185,13 +188,15 @@ def run():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     clicou = True
 
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                    clicou = True
+
                 if event.type == pygame.QUIT:
                     pygame.quit()
         
             if teclas[pygame.K_RETURN]:
                 clicou = False
-                morto = False
-        
+                morto = False        
             
 
             window.fill((0,0,0))
@@ -308,10 +313,7 @@ def run():
                     bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
             
 
-
-            morto = False         
-
-        
+            morto = False                 
 
         
         pygame.display.update()
