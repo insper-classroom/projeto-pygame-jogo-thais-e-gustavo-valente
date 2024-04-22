@@ -16,7 +16,7 @@ def run():
     fonteprincipal = pygame.font.Font(pygame.font.get_default_font(), 30)
     fontepequena = pygame.font.Font(pygame.font.get_default_font(), 20)
     formatentenovamente = pygame.image.load('assets/img/botaoforma.png')
-    # musicaestadoislamico = pygame.mixer.music.load('musicaestadoislamico.mp3')
+    musicaestadoislamico = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
 
     assets = {
        'dinheirosom': pygame.mixer.Sound('assets/snd/moneysound.mp3'),
@@ -68,7 +68,7 @@ def run():
     tentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
     
     while True:
-        # pygame.mixer.music.play()
+        pygame.mixer.music.play()
         deltat = time.time() - last_updated
         deltat *= 60
         last_updated = time.time()
