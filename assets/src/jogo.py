@@ -6,6 +6,7 @@ from dinheiro import Dinheiro
 from explosao import Explosao
 from fundo import Fundo
 from jogador import Jogador
+from botao import Botao
 from funcoes import clip, checacolisoes, pegamaiorelemento, adicionanoarquivo
 
 
@@ -29,6 +30,14 @@ def run():
     jogador = Jogador()
     dinheiros = []
     bombas = []
+    botoes = []
+
+    for i in range(3):
+        botoes.append(Botao())
+
+    botoes[0].preco = 5
+    botoes[1].preco = 5
+    botoes[2].preco = 30
     
     for i in range(12): 
         dinheiros.append(Dinheiro())
@@ -83,13 +92,14 @@ def run():
             if event.type == pygame.QUIT:
                 pygame.quit()
         
-        if (clicou and checacolisoes(mx, my, 3, 3, window.get_width() / 2 - botaotentenovamente.get_width() / 2, 288, botaotentenovamente.get_width(), botaotentenovamente.get_height())):
+        if teclas[pygame.K_RETURN]:
             clicou = False
             break
+
         window.fill((255, 255, 255))
         window.blit(planodefundotit, (0, 0))
-        comece = fonte_pequena.render('CLIQUE AQUI PARA COMEÇAR', True, (0, 0, 0))
-        window.blit(comece, (window.get_width()/2 - comece.get_width()/2, 290))
+        comece = fonte_pequena.render('APERTE "ENTER" PARA COMEÇAR', True, (0, 0, 0))
+        window.blit(comece, (window.get_width()/2 - comece.get_width()/2, window.get_height() - comece.get_height()))
          
         pygame.display.update()
 
@@ -137,6 +147,32 @@ def run():
 
         for bomba in bombas:
             window.blit(bomba.spritebomba, (bomba.posicao.x, bomba.posicao.y + camerafora))
+        
+        for botao in botoes:
+            teclas = pygame.key.get_pressed()
+            if not morto:
+                if teclas[pygame.K_1]:
+                    if contadordinheiro >= botao.preco:
+                        botao.nivel += 1
+                        contadordinheiro -= botao.preco
+                        botao.preco = round(botao.preco*2.5)
+                        if botoes.index == 0:
+                            alturapulo *= 1.5
+
+                if teclas[pygame.K_2]:
+                    if contadordinheiro >= botao.preco:
+                        botao.nivel += 1
+                        contadordinheiro -= botao.preco
+                        botao.preco = round(botao.preco*2.5)
+                        jogador.velocidade.x *= 1.5
+
+
+                if teclas[pygame.K_3]:
+                    if contadordinheiro >= botao.preco:
+                        botao.nivel += 1
+                        contadordinheiro -= botao.preco
+                        botao.preco = round(botao.preco*2.5)
+                        vida += 20
 
         cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)
         objetos_astronomicos = {
@@ -160,6 +196,13 @@ def run():
         appendscore = adicionanoarquivo(recordearq, novorecord)
 
         maior = pegamaiorelemento(recordearq)
+
+        for botao in botoes:
+            window.blit(botao.botaoforma, (220 + (botoes.index(botao)*125), 393))
+            mostrapreco = fonte_pequena.render('$' + str(botao.preco), True, (255, 255, 255))
+            window.blit(mostrapreco, (240 + (botoes.index(botao)*125), 405))
+            nivelbotao = fonte_menor.render('Nv' + str(botao.nivel), True, (200, 200, 200))
+            window.blit(nivelbotao, (234 + (botoes.index(botao)*125), 445))
 
         maiorrecorde = fonte_pequena.render('Maior Distância: ' + str(maior), True, (168, 168, 168))
         window.blit(maiorrecorde, (window.get_width() / 2 - maiorrecorde.get_width() / 2 , 5))
@@ -282,7 +325,14 @@ def run():
             jogador.flipatual = jogador.flipdireita
             bombas = []
             dinheiros = []
+            botoes = []
 
+            for i in range(3):
+                botoes.append(Botao())
+
+            botoes[0].preco = 5
+            botoes[1].preco = 5
+            botoes[2].preco = 30
 
             for i in range(5): 
                 dinheiros.append(Dinheiro())
