@@ -18,12 +18,6 @@ def run():
     formatentenovamente = pygame.image.load('assets/img/botaoforma.png')
     # musicaestadoislamico = pygame.mixer.music.load('musicaestadoislamico.mp3')
 
-    tempo = pygame.time.Clock()
-    user_text = ''
-    input_rect2 = pygame.Rect(window.get_width()/2 - 50, window.get_height()/2, 500, 40)
-    color_active = (128,128,128)
-    color_passive = (79,79,79)
-
     assets = {
        'dinheirosom': pygame.mixer.Sound('assets/snd/moneysound.mp3'),
        'explosaosom': pygame.mixer.Sound('assets/snd/explosao.mp3'),
@@ -69,8 +63,7 @@ def run():
     planodefundotit = pygame.image.load('assets/img/planodefundostart.png')
     botaotentenovamente = pygame.image.load('assets/img/botaoforma.png')
     tentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
-
-    active = False
+    
     while True:
         # pygame.mixer.music.play()
         deltat = time.time() - last_updated
@@ -85,17 +78,6 @@ def run():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 clicou = True
 
-                if input_rect2.collidepoint(event.pos):
-                    active = True
-                else:
-                    active = False
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    user_text = user_text[:-1]
-                else:
-                    user_text += event.unicode
-
             if event.type == pygame.QUIT:
                 pygame.quit()
         
@@ -103,22 +85,9 @@ def run():
             clicou = False
             break
         window.fill((255, 255, 255))
-        if active:
-            color = color_active
-        else:
-            color = color_passive
-        
-        pygame.draw.rect(window, color, input_rect2)
-        texto = fonte_pequena.render(user_text, True, (0,0,0))
-        window.blit(texto, (window.get_width()/2 - 40, window.get_height()/2 + 5))
-        input_rect2.w = max(100, texto.get_width() + 10)
-
-        pygame.display.flip()
-
-        tempo.tick(60)
-        # window.blit(planodefundotit, (0, 0)) 
-        # comece = fonte_pequena.render('CLIQUE AQUI PARA COMEÇAR', True, (0, 0, 0))
-        # window.blit(comece, (window.get_width()/2 - comece.get_width()/2, 290))
+        window.blit(planodefundotit, (0, 0))
+        comece = fonte_pequena.render('CLIQUE AQUI PARA COMEÇAR', True, (0, 0, 0))
+        window.blit(comece, (window.get_width()/2 - comece.get_width()/2, 290))
          
         pygame.display.update()
 
@@ -202,10 +171,8 @@ def run():
             
 
             window.fill((0,0,0))
-            textotentenovamente = fonte_menor.render('Recomeçar', True, (0, 0, 0))
-            input_rect = pygame.Rect(window.get_width()/2 - textotentenovamente.get_width()/2, window.get_height()/2 - 5, textotentenovamente.get_width() + 8, textotentenovamente.get_height()+ 10)
-            pygame.draw.rect(window, (255,255,255), input_rect)
-            window.blit(textotentenovamente, (270, 240)) 
+            textotentenovamente = fonte_menor.render('Recomeçar', True, (255, 255, 255))
+            window.blit(textotentenovamente, (270, 240))
 
             pygame.display.update()
 
@@ -288,7 +255,7 @@ def run():
             multiplicadordinheiro = 3
             jogador.velocidade.xy = 2.5, 0
             jogador.posicao.xy = 300, 100
-            jogador.flipatual = jogador.flipdireita
+            jogador.flipatual = jogador.flipesquerda
             bombas = []
             dinheiros = []
 
