@@ -85,7 +85,7 @@ def run():
             clicou = False
             break
         window.fill((255, 255, 255))
-        window.blit(planodefundotit, (0, 0))
+        # window.blit(planodefundotit, (0, 0))
         comece = fonte_pequena.render('CLIQUE AQUI PARA COMEÇAR', True, (0, 0, 0))
         window.blit(comece, (window.get_width()/2 - comece.get_width()/2, 290))
          
@@ -171,8 +171,10 @@ def run():
             
 
             window.fill((0,0,0))
-            textotentenovamente = fonte_menor.render('Recomeçar', True, (255, 255, 255))
-            window.blit(textotentenovamente, (270, 240))
+            textofim = fonte_menor.render('GAME OVER', True, (255,255,255))
+            window.blit(textofim, (window.get_width()/2 - textofim.get_width()/2, window.get_height()/2 - textofim.get_height()/2))
+            textotentenovamente = fonte_menor.render('Aperte "enter" para recomeçar!', True, (255, 255, 255))
+            window.blit(textotentenovamente, (window.get_width()/2 - textotentenovamente.get_width()/2, window.get_height()/2 - textotentenovamente.get_height()/2 + textofim.get_height())) 
 
             pygame.display.update()
 
