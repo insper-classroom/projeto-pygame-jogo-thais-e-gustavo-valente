@@ -13,6 +13,7 @@ from funcoes import clip, checacolisoes, pegamaiorelemento, adicionanoarquivo
 def run():
     pygame.init()
     window=pygame.display.set_mode((640,480))
+    pygame.display.set_caption('Riqueza Geracional')
     font = pygame.font.Font(pygame.font.get_default_font(), 100)
     fonteprincipal = pygame.font.Font(pygame.font.get_default_font(), 30)
     fontepequena = pygame.font.Font(pygame.font.get_default_font(), 20)
@@ -175,7 +176,7 @@ def run():
                         botao.nivel += 1
                         contadordinheiro -= botao.preco
                         botao.preco = round(botao.preco*2.5)
-                        vida += 20
+                        multiplicadordinheiro *= 1.5
 
         cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)
         objetos_astronomicos = {
@@ -289,8 +290,9 @@ def run():
             if not morto:
                 if (checacolisoes(jogador.posicao.x, jogador.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height(), dinheiro.posicao.x, dinheiro.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height())):
                     morto = False
+                    multiplicadordinheiro = 1
                     pygame.mixer.Sound.play(assets['dinheirosom'])
-                    contadordinheiro += 1
+                    contadordinheiro += 1*1
                     vida +=20
                     if vida > 100:
                         vida = 100
