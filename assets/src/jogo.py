@@ -308,7 +308,7 @@ def run():
                 vida -= 20
                 pygame.mixer.Sound.play(assets['explosaosom'])
                 exp = Explosao(bomba.posicao.x, bomba.posicao.y)
-                window.blit(exp.image, (100, 0)) 
+                window.blit(exp.image, (150, 0)) 
 
                 bomba.posicao.y -= window.get_height() - random.randrange(0, 200)
                 bomba.posicao.x = random.randrange(0, window.get_width() - jogador.flipatual.get_width())
