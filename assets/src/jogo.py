@@ -40,9 +40,13 @@ def run():
     botoes[1].preco = 5
     botoes[2].preco = 30
 
-    botaopulo = pygame.transform.scale(pygame.image.load('assets/img/setapulo.png'), (80, 50))
-    botaovel = pygame.transform.scale(pygame.image.load('assets/img/setavel.png'), (80, 50))
-    botaodin = pygame.transform.scale(pygame.image.load('assets/img/iconecifrao-removebg-preview.png'), (80, 50))
+    # botaopulo = pygame.transform.scale(pygame.image.load('assets/img/setapulo.png'), (80, 50))
+    # botaovel = pygame.transform.scale(pygame.image.load('assets/img/setavel.png'), (80, 50))
+    # botaodin = pygame.transform.scale(pygame.image.load('assets/img/iconecifrao-removebg-preview.png'), (80, 50))
+
+    botaopulo =  fontepequena.render('+ 1.5 pulo', True, (255, 255, 255))
+    botaovel = fontepequena.render('+ 1.5 vel', True, (255, 255, 255))
+    botaodin = fontepequena.render('+ 1.5 din', True, (255, 255, 255))
 
     imagens_botoes = [
         botaopulo,
@@ -210,7 +214,7 @@ def run():
 
         i = 0
         for botao in botoes:
-            window.blit(imagens_botoes[i], (220 + (botoes.index(botao)*125), 393)) 
+            window.blit(imagens_botoes[i], (210 + (botoes.index(botao)*125), 410)) 
             nivelbotao = fonte_menor.render('Nv' + str(botao.nivel), True, (200, 200, 200))
             window.blit(nivelbotao, (215 + (botoes.index(botao)*125), 445))
             mostrapreco = fonte_menor.render('$' + str(botao.preco), True, (255, 255, 255))
