@@ -7,5 +7,4 @@ class Botao(pygame.sprite.Sprite):
         self.nivel = 1
 
     botaoforma = pygame.image.load('assets/img/botaoforma.png')
-    botaoforma = pygame.transform.scale(botaoforma, (80, 50))
-
+    botaoforma = pygame.transform.scale(botaoforma, (80, 50)) 

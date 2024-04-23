@@ -34,11 +34,21 @@ def run():
     botoes = []
 
     for i in range(3):
-        botoes.append(Botao())
+        botoes.append(Botao()) 
 
     botoes[0].preco = 5
     botoes[1].preco = 5
     botoes[2].preco = 30
+
+    botaopulo = pygame.transform.scale(pygame.image.load('assets/img/setapulo.png'), (80, 50))
+    botaovel = pygame.transform.scale(pygame.image.load('assets/img/setavel.png'), (80, 50))
+    botaodin = pygame.transform.scale(pygame.image.load('assets/img/iconecifrao-removebg-preview.png'), (80, 50))
+
+    imagens_botoes = [
+        botaopulo,
+        botaovel,
+        botaodin
+    ]
     
     for i in range(12): 
         dinheiros.append(Dinheiro())
@@ -87,9 +97,6 @@ def run():
         teclas = pygame.key.get_pressed()
 
         for event in pygame.event.get():
-            # if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-            #     clicou = True
-
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 clicou = True
 
@@ -161,7 +168,7 @@ def run():
                         contadordinheiro -= botao.preco
                         botao.preco = round(botao.preco*2.5)
                         if botoes.index == 0:
-                            alturapulo *= 1.5
+                            alturapulo *= 1.5 
 
                 if teclas[pygame.K_2]:
                     if contadordinheiro >= botao.preco:
@@ -201,12 +208,14 @@ def run():
 
         maior = pegamaiorelemento(recordearq)
 
+        i = 0
         for botao in botoes:
-            window.blit(botao.botaoforma, (220 + (botoes.index(botao)*125), 393))
-            mostrapreco = fonte_pequena.render('$' + str(botao.preco), True, (255, 255, 255))
-            window.blit(mostrapreco, (240 + (botoes.index(botao)*125), 405))
+            window.blit(imagens_botoes[i], (220 + (botoes.index(botao)*125), 393)) 
             nivelbotao = fonte_menor.render('Nv' + str(botao.nivel), True, (200, 200, 200))
-            window.blit(nivelbotao, (234 + (botoes.index(botao)*125), 445))
+            window.blit(nivelbotao, (215 + (botoes.index(botao)*125), 445))
+            mostrapreco = fonte_menor.render('$' + str(botao.preco), True, (255, 255, 255))
+            window.blit(mostrapreco, (265 + (botoes.index(botao)*125), 445)) 
+            i += 1
 
         maiorrecorde = fonte_pequena.render('Maior Distância: ' + str(maior), True, (168, 168, 168))
         window.blit(maiorrecorde, (window.get_width() / 2 - maiorrecorde.get_width() / 2 , 5))
