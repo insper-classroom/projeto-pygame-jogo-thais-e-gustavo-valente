@@ -40,10 +40,6 @@ def run():
     botoes[1].preco = 5
     botoes[2].preco = 30
 
-    # botaopulo = pygame.transform.scale(pygame.image.load('assets/img/setapulo.png'), (80, 50))
-    # botaovel = pygame.transform.scale(pygame.image.load('assets/img/setavel.png'), (80, 50))
-    # botaodin = pygame.transform.scale(pygame.image.load('assets/img/iconecifrao-removebg-preview.png'), (80, 50))
-
     botaopulo =  fontepequena.render('+ 1.5 pulo', True, (255, 255, 255))
     botaovel = fontepequena.render('+ 1.5 vel', True, (255, 255, 255))
     botaodin = fontepequena.render('+ 1.5 din', True, (255, 255, 255))
@@ -58,7 +54,7 @@ def run():
         dinheiros.append(Dinheiro())
 
     
-    for i in range(9):
+    for i in range(6):
         bombas.append(Bomba())
 
     for dinheiro in dinheiros:
@@ -85,7 +81,7 @@ def run():
     fonte_menor = pygame.font.Font(pygame.font.get_default_font(), 20)
 
     moneysound = pygame.mixer.Sound('assets/snd/moneysound.mp3')
-    planodefundotit = pygame.image.load('assets/img/planodefundostart.png')
+    planodefundotit = pygame.image.load('assets/img/Screen Shot 2024-04-24 at 15.29.08.png')
     planodefundotit = pygame.transform.scale(planodefundotit, (window.get_width() - 40, window.get_height() - 30))
     botaotentenovamente = pygame.image.load('assets/img/botaoforma.png')
 
@@ -257,8 +253,9 @@ def run():
             
 
             window.fill((0,0,0))
-            textotentenovamente = fonte_menor.render('Aperte ENTER para recomeçar', True, (255, 255, 255))
-            window.blit(textotentenovamente, (window.get_width()/2 - 150, window.get_height()/2))
+            planodefundofin = pygame.image.load('assets/img/Screen Shot 2024-04-24 at 15.31.10.png')
+            planodefundofin = pygame.transform.scale(planodefundofin, (window.get_width() - 20, window.get_height() - 30))
+            window.blit(planodefundofin, (0, 0)) 
 
             pygame.display.update()
 
@@ -385,4 +382,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    run() 
