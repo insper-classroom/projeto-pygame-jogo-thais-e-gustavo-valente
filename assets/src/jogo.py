@@ -238,9 +238,6 @@ def run():
             teclas = pygame.key.get_pressed()
 
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    clicou = True
-
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     clicou = True
 
