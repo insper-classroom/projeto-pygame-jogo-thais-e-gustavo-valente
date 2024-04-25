@@ -16,7 +16,7 @@ def run():
     pygame.display.set_caption('Riqueza Geracional')
     font = pygame.font.Font(pygame.font.get_default_font(), 100)
     fonteprincipal = pygame.font.Font(pygame.font.get_default_font(), 30)
-    fontepequena = pygame.font.Font(pygame.font.get_default_font(), 20)
+    fontepequena = pygame.font.Font(pygame.font.get_default_font(), 18)
     formatentenovamente = pygame.image.load('assets/img/botaoforma.png')
     trilhasonora = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
     pygame.mixer.music.play()
@@ -32,6 +32,7 @@ def run():
     dinheiros = []
     bombas = []
     botoes = []
+    multiplicadordinheiro = 1
 
     for i in range(3):
         botoes.append(Botao()) 
@@ -40,9 +41,12 @@ def run():
     botoes[1].preco = 5
     botoes[2].preco = 30
 
-    botaopulo =  fontepequena.render('+ 1.0 pulo', True, (255, 255, 255))
+    botaopulo =  fontepequena.render('+ 1.5 pulo', True, (255, 255, 255))
+    indicador1 = fontepequena.render('[1]', True, (255, 255, 255))
     botaovel = fontepequena.render('+ 1.5 vel', True, (255, 255, 255))
+    indicador2 = fontepequena.render('[2]', True, (255, 255, 255))
     botaodin = fontepequena.render('+ 1.5 din', True, (255, 255, 255))
+    indicador3 = fontepequena.render('[3]', True, (255, 255, 255))
 
     imagens_botoes = [
         botaopulo,
@@ -50,11 +54,11 @@ def run():
         botaodin
     ]
     
-    for i in range(12): 
+    for i in range(11): 
         dinheiros.append(Dinheiro())
 
     
-    for i in range(4):
+    for i in range(5):
         bombas.append(Bomba())
 
     for dinheiro in dinheiros:
@@ -70,7 +74,6 @@ def run():
     altura = 0
     vida = 100
     alturapulo = 3
-    multiplicador = 5
     morto = False
     inverte = False
     
@@ -183,7 +186,7 @@ def run():
                         botao.nivel += 1
                         contadordinheiro -= botao.preco
                         botao.preco = round(botao.preco*2.5)
-                        multiplicadordinheiro *= 1.5
+                        multiplicadordinheiro += 0.5
 
         cor = colorsys.hsv_to_rgb(((jogador.posicao.y/2) % 100) / 100,0.2,0.5)
         objetos_astronomicos = {
@@ -210,12 +213,16 @@ def run():
 
         i = 0
         for botao in botoes:
-            window.blit(imagens_botoes[i], (210 + (botoes.index(botao)*125), 410)) 
+            window.blit(imagens_botoes[i], (210 + (botoes.index(botao)*125), 425)) 
             nivelbotao = fonte_menor.render('Nv' + str(botao.nivel), True, (200, 200, 200))
-            window.blit(nivelbotao, (215 + (botoes.index(botao)*125), 445))
+            window.blit(nivelbotao, (215 + (botoes.index(botao)*125), 455))
             mostrapreco = fonte_menor.render('$' + str(botao.preco), True, (255, 255, 255))
-            window.blit(mostrapreco, (265 + (botoes.index(botao)*125), 445)) 
+            window.blit(mostrapreco, (265 + (botoes.index(botao)*125), 455)) 
             i += 1
+             
+        window.blit(indicador1, (210, 393))
+        window.blit(indicador2, (330 , 393))
+        window.blit(indicador3, (460, 393))
 
         maiorrecorde = fonte_pequena.render('Maior Distância: ' + str(maior), True, (168, 168, 168))
         window.blit(maiorrecorde, (window.get_width() / 2 - maiorrecorde.get_width() / 2 , 5))
@@ -233,16 +240,10 @@ def run():
             deltat *= 60
             last_updated = time.time()
 
-            mx, my = pygame.mouse.get_pos()
-            clicou = False
+
             teclas = pygame.key.get_pressed()
 
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    clicou = True
-
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                    clicou = True
 
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -266,21 +267,21 @@ def run():
         if inverte and jogador.velocidade.x > 0:
             jogador.velocidade.x = -abs(jogador.velocidade.x)
             jogador.flipatual = jogador.flipesquerda
-            rotacao = 4.2
+            rotacao = 5
         elif inverte and jogador.velocidade.x < 0:
             jogador.velocidade.x = abs(jogador.velocidade.x)
             jogador.flipatual = jogador.flipdireita
-            rotacao = -4.2
+            rotacao = -5
 
         if jogador.posicao.x + jogador.flipatual.get_size()[0] > 640:
             jogador.velocidade.x = -abs(jogador.velocidade.x)
             jogador.flipatual = jogador.flipesquerda
-            rotacao = 4.2
+            rotacao = 5
 
         if jogador.posicao.x < 0:
             jogador.velocidade.x = abs(jogador.velocidade.x)
             jogador.flipatual = jogador.flipdireita
-            rotacao = -4.2  
+            rotacao = -5 
 
         if pulando and not morto:
             jogador.velocidade.y = -alturapulo
@@ -300,9 +301,8 @@ def run():
             if not morto:
                 if (checacolisoes(jogador.posicao.x, jogador.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height(), dinheiro.posicao.x, dinheiro.posicao.y, jogador.flipatual.get_width(), jogador.flipatual.get_height())):
                     morto = False
-                    multiplicadordinheiro = 1
                     pygame.mixer.Sound.play(assets['dinheirosom'])
-                    contadordinheiro += 1*1
+                    contadordinheiro += multiplicadordinheiro*1
                     vida +=20
                     if vida > 100:
                         vida = 100
@@ -336,7 +336,6 @@ def run():
             contadordinheiro = 0
             altura = 0
             alturapulo = 2.5
-            multiplicadordinheiro = 3
             jogador.velocidade.xy = 2.5, 0
             jogador.posicao.xy = 300, 100
             jogador.flipatual = jogador.flipdireita
