@@ -92,11 +92,9 @@ def run():
     
     tentenovamente = fonte_menor.render('Pressione ENTER para recomeçar', True, (0, 0, 0))
     
+#telainicial
     while True:
         last_updated = time.time()
-
-        mx, my = pygame.mouse.get_pos()
-        clicou = False
         teclas = pygame.key.get_pressed()
 
         for event in pygame.event.get():
@@ -105,28 +103,44 @@ def run():
 
             if event.type == pygame.QUIT:
                 pygame.quit()
+                  # Adiciona esta linha para sair do programa
         
         if teclas[pygame.K_RETURN]:
-            clicou = False
             break
 
         window.fill((255, 255, 255))
         window.blit(planodefundotit, (0, 0))
         comece = fonte_pequena.render('APERTE "ENTER" PARA COMEÇAR', True, (0, 0, 0))
         window.blit(comece, (window.get_width()/2 - comece.get_width()/2, window.get_height() - comece.get_height()))
-         
+        
         pygame.display.update()
 
-    trilhasonora = pygame.mixer.music.load('assets/snd/Puzzle Piece - Lorne Balfe copy.mp3')
-    pygame.mixer.music.play()
+    # Segundo loop
+    while True:
+        last_updated = time.time()
+        teclas = pygame.key.get_pressed()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                 # Adiciona esta linha para sair do programa
+        
+        if teclas[pygame.K_SPACE]:
+            break
+
+        window.fill((255, 255, 255))
+        planodefundoin = pygame.image.load('assets/img/telainstrucao.png')
+        planodefundoin = pygame.transform.scale(planodefundoin, (window.get_width() - 40, window.get_height() - 30))
+        window.blit(planodefundoin, (0, 0)) 
+        
+        pygame.display.update()
+
+#telajogo
     while True:
         deltat = time.time() - last_updated
         deltat *= 60
         last_updated = time.time()
-        mx,my = pygame.mouse.get_pos()
-
         pulando = False
-        clicou = False
         inverte = False
         camerafora = -jogador.posicao.y + window.get_height()/2 - jogador.flipatual.get_size()[1]/2
         
@@ -139,9 +153,6 @@ def run():
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
                 inverte = True
-  
-            if clicou and my < window.get_height() - 90: 
-                pulando = True 
             
             if event.type == pygame.QUIT:
                 pygame.quit() 
