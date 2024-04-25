@@ -40,7 +40,7 @@ def run():
     botoes[1].preco = 5
     botoes[2].preco = 30
 
-    botaopulo =  fontepequena.render('+ 1.5 pulo', True, (255, 255, 255))
+    botaopulo =  fontepequena.render('+ 1.0 pulo', True, (255, 255, 255))
     botaovel = fontepequena.render('+ 1.5 vel', True, (255, 255, 255))
     botaodin = fontepequena.render('+ 1.5 din', True, (255, 255, 255))
 
@@ -54,7 +54,7 @@ def run():
         dinheiros.append(Dinheiro())
 
     
-    for i in range(6):
+    for i in range(4):
         bombas.append(Bomba())
 
     for dinheiro in dinheiros:
