@@ -129,8 +129,8 @@ def run():
             break
 
         window.fill((255, 255, 255))
-        planodefundoin = pygame.image.load('assets/img/telainstrucao.png')
-        planodefundoin = pygame.transform.scale(planodefundoin, (window.get_width() - 40, window.get_height() - 30))
+        planodefundoin = pygame.image.load('assets/img/telainstrucao2.png')
+        planodefundoin = pygame.transform.scale(planodefundoin, (window.get_width(), window.get_height()))
         window.blit(planodefundoin, (0, 0)) 
         
         pygame.display.update()
